@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title translate>app.title</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="bower_components/bootstrap-rtl/dist/css/bootstrap-rtl.css">
+  <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css"> -->
+  <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css">
+  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
+  <link href="https://fonts.googleapis.com/css?family=Amiri|Cairo" rel="stylesheet">
+  <link rel='stylesheet' href='bower_components/angular-loading-bar/build/loading-bar.css'/>
+  
+
+  <!-- put css here-->
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body ng-cloak>
+
+  <div ng-include="'menu/view.html'"></div>
+
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+<div class="container">
+	<div class="alertContainer">
+		  <div class="alert alert-{{alert.type}} alert-dismissable" ng-repeat="alert in alerts">
+	        <div style="overflow: visible" id="alert.{{alert.id}}"></div>
+	        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	        {{alert.message | translate}}
+	        <a href="{{alert.link}}" target="_blank" class="alert-link" ng-show="alert.link">More</a>.
+	    </div>
+	</div>
+    <div ng-view></div>
+</div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <!-- put non-ng js here-->
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/angular-translate/angular-translate.js"></script>
+  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+  
+  <!-- put ng plugins here-->
+
+  <script src="app.js"></script>
+
+
+  <!-- commons services -->
+  <script src="commons/base64-service.js"></script>
+  <script src="commons/alert-service.js"></script>
+  <script src="commons/login-service-proxy.js"></script>
+
+  <!-- services -->
+  <script src="login/service.js"></script>
+  <script src="menu/service.js"></script>
+  <script src="register/service.js"></script>
+  <script src="weeklist/add/service.js"></script>
+  <script src="weeklist/service.js"></script>
+  <script src="weeklist/edit/service.js"></script>
+
+  <!-- controllers -->
+  <script src="login/controller.js"></script>
+  <script src="home/controller.js"></script>
+  <script src="menu/controller.js"></script>
+  <script src="register/controller.js"></script>
+  <script src="weeklist/add/controller.js"></script>
+  <script src="weeklist/controller.js"></script>
+  <script src="weeklist/edit/controller.js"></script>
+
+</body>
+</html>

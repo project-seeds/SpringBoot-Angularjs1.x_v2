@@ -1,0 +1,10 @@
+<nav class="navbar navbar-default menu" ng-if="user" ng-controller="MenuCtrl">
+	<div class="container-fluid">
+		<ul class="nav navbar-nav">
+			<li ng-repeat="item in userMenu" ng-class="{active: isActive(item)}">
+				<a href="#{{item.link}}" translate>{{item.title}}</a>
+			</li>
+			<li><a ng-click="logout()" href="" translate>logout</a></li>
+		</ul>
+	</div>
+</nav>

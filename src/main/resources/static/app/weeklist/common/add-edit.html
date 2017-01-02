@@ -1,0 +1,57 @@
+<div class="row">
+	<h3>{{'weeklist.' + type + '.title' | translate}} <span style="color: red;">{{weekNo()}}</span></h3>
+	<form name="form">
+		<table class="table" novalidate>
+			<thead>
+				<tr>
+					<th translate>itemTitleName</th>
+					<th style="width: 14%;" translate>itemTitleCount</th>
+					<th style="width: 5%;"></th>
+					<th style="width: 5%;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in list">
+					<td>
+						<div class="form-group">
+							<input type="text" class="form-control" name="itemName{{$index}}" autofocus ng-model="item.name"
+								required autocomplete="off" uib-typeahead="address for address in searchItems($viewValue)"/>
+							<div ng-messages="form['itemName' + $index].$error" ng-if="form['itemName' + $index].$dirty" class="has-error">
+								<div class="help-block" ng-message="required">{{'field.required' | translate}}</div>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+							<input type="text" class="form-control" name="itemCount{{$index}}" ng-model="item.count"
+								placeholder="1" ng-pattern='/^[0-9]+$/' />
+							<div ng-messages="form['itemCount' + $index].$error" ng-if="form['itemCount' + $index].$dirty" class="has-error">
+								<div class="help-block" ng-message="pattern">{{'field.numeric' | translate}}</div>
+							</div>
+						</div>
+					</td>
+					
+					<td >
+						<button class="btn btn-danger" ng-click="remove($index)" ng-if="list.length != 1">
+						<i class="fa fa-minus" aria-hidden="true"></i></button>
+					</td>
+
+					<td >
+						<button class="btn btn-success" ng-click="addNew()"
+							ng-if="list.length -1  === $index"
+							ng-disabled="form['itemName' + $index].$invalid || form['itemCount' + $index].$invalid">
+						<i class="fa fa-plus" aria-hidden="true"></i></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="col-xs-2 pull-left">
+			<div class="btn-block">
+    			<button class="btn btn-primary btn-block" ng-click="save()" ng-disabled="form.$invalid" translate> {{type}} </button>
+			</div>
+			<div class="btn-block" >
+			    <a class="btn btn-info btn-block" href="#/weeklist" translate ng-if="type === 'edit'"> back </a>
+			 </div>
+		</div>
+	</form>
+</div>

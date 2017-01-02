@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-md-6 col-md-offset-4 loginbox">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" translate>register.title</h3>
+            </div>
+            <div class="panel-body">
+                <form name="form" role="form" novalidate>
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="{{'username' | translate}}" name="username" type="text" required 
+                            	autofocus ng-model="userInfo.username" autocomplete="off">
+                           	 <div ng-messages="form.username.$error" ng-if="form.username.$dirty" class="has-error">
+                               	<div class="help-block" ng-message="required">{{'field.required' | translate}}</div>
+                           	</div>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="{{'password' | translate}}" name="password" type="password" value="" required 
+                            	ng-model="userInfo.password" autocomplete="off">
+                           	<div ng-messages="form.password.$error" ng-if="form.password.$dirty" class="has-error">
+                              	<div class="help-block" ng-message="required">{{'field.required' | translate}}</div>
+                           	</div>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="{{'repeat.password' | translate}}" name="password2" type="password" value="" required 
+                            	ng-model="userInfo.password2" autocomplete="off">
+                           	<div ng-messages="form.password2.$error" ng-if="form.password2.$dirty" class="has-error">
+                              	<div class="help-block" ng-message="required">{{'field.required' | translate}}</div>
+                           	</div>
+                        </div>
+                        <!-- Change this to a button or input when using this as a form -->
+                        <a ng-click="form.$valid && register()" ng-disabled="form.$invalid" class="btn btn-lg btn-warning btn-block" translate>register</a>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <a href="#login" translate>to.login.page</a>
+    </div>
+</div>

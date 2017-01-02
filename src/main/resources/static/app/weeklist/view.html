@@ -1,0 +1,47 @@
+<div class="row">
+	<form name="form">
+		<table class="table" novalidate>
+			<thead>
+				<tr>
+					<th translate>week</th>
+					<th translate>createdDate</th>
+					<th translate>modifiedDate</th>
+					<th style="width: 5%;" translate>edit</th>
+					<th style="width: 5%;" translate>copy</th>
+					<th style="width: 5%;" translate>delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="plan in list">
+					<td>
+						<span class="text-info">
+							<a href="#/weeklist/view/{{plan.id}}">{{'week_no' | translate}} {{plan.weekNo}}</a>
+						</span>
+					</td>
+					<td>
+						<span class="text-info">{{plan.createdDate | date: 'short'}}</span>
+					</td>
+					<td>
+						<span class="text-info">{{plan.modifiedDate | date: 'short'}}</span>
+					</td>
+					<td>
+						<a class="btn btn-primary" href="#/weeklist/edit/{{plan.id}}">
+							<i class="fa fa-edit" aria-hidden="true"></i>
+						</a>	
+					</td>
+					
+					<td >
+						<button class="btn btn-info" ng-click="copy(plan.id)" >
+							<i class="fa fa-copy" aria-hidden="true"></i>
+						</button>
+					</td>
+					<td >
+						<button class="btn btn-danger" ng-click="remove(plan.id)" >
+							<i class="fa fa-minus" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
