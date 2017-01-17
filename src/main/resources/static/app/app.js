@@ -52,10 +52,13 @@ function authenticateOnServer(LoginService, $rootScope, $location) {
         function(user) {
             if (user) {
                 $rootScope.user = user;
+                if ($location.path() === '/login'){
+            		$location.path('/');
+            	}
                 console.log('authenticated: ', user);
             } else {
                 $rootScope.user = null;
-                if ($location.path !== '/register'){
+                if ($location.path() !== '/register'){
             		$location.path('/login');
             	}
             }
