@@ -22,7 +22,7 @@ config(['$routeProvider', '$httpProvider', '$translateProvider', function($route
 
     $rootScope.user = null;
     
-    authenticateOnServer(LoginService, $rootScope, function(){
+    authenticateOnServer($rootScope, LoginService, function(){
     	redirect($rootScope, $location, LandingPageService, $location.path());
     	
         $rootScope.$on('$routeChangeStart', function(ev, next, curr) {
@@ -33,8 +33,11 @@ config(['$routeProvider', '$httpProvider', '$translateProvider', function($route
 }]);
 
 function redirect($rootScope, $location, LandingPageService, currentPath){
+    
+    var PUBLIC_PAGES = ['/register'];
+
 	if ($rootScope.user){
-		if (currentPath === '/login'){
+		if (currentPath === '/login' || PUBLIC_PAGES.some(function(e){return e == currentPath})){
 	 		$location.path('/home');
 	 	}else if (currentPath === '/home'){
 	    	var landingPage = LandingPageService.find(function(e){ return e.role === $rootScope.user.role }).link;
@@ -42,13 +45,13 @@ function redirect($rootScope, $location, LandingPageService, currentPath){
 	    	landingPage && $location.path(landingPage);
 	    }	
 	}else{
-		if (currentPath !== '/register'){
+		if (!PUBLIC_PAGES.some(function(e){return e == currentPath})){
     		$location.path('/login');
     	}
 	}
 }
 
-function authenticateOnServer(LoginService, $rootScope, callback) {
+function authenticateOnServer($rootScope, LoginService, callback) {
     LoginService.login().then(
         function(user) {      // call success callback if current user is already authenticated before
             if (user) {
