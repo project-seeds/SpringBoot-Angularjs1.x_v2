@@ -21,52 +21,47 @@ config(['$routeProvider', '$httpProvider', '$translateProvider', function($route
 }]).run(['$rootScope', '$location', 'LoginService', 'AlertService', 'LandingPageService', function($rootScope, $location, LoginService, AlertService, LandingPageService) {
 
     $rootScope.user = null;
-
-    $rootScope.$on('$routeChangeStart', function(ev, next, curr) {
-        AlertService.reset();
-
-        if (next.$$route) {
-            if (!curr || !curr.$$route) { //on page reload
-                authenticateOnServer(LoginService, $rootScope, $location);
-            } else {
-                if ($rootScope.user) {
-                    if (next.$$route.originalPath === '/login') {
-                        $location.path('/');
-                    }else if (next.$$route.originalPath === '/home'){
-                    	var landingPage = LandingPageService.find(function(e){ return e.role === $rootScope.user.role }).link;
-                    	console.log('opening landing page: ' + landingPage);
-                    	landingPage && $location.path(landingPage);
-                    }
-                } else {
-                	if (next.$$route.originalPath !== '/register'){
-                		$location.path('/login');
-                	}
-                }
-            }
-        }
-    });
+    
+    authenticateOnServer(LoginService, $rootScope, function(){
+    	redirect($rootScope, $location, LandingPageService, $location.path());
+    	
+        $rootScope.$on('$routeChangeStart', function(ev, next, curr) {
+            AlertService.reset();
+            next.$$route && redirect($rootScope, $location, LandingPageService, next.$$route.originalPath);
+        });
+    })
 }]);
 
-function authenticateOnServer(LoginService, $rootScope, $location) {
+function redirect($rootScope, $location, LandingPageService, currentPath){
+	if ($rootScope.user){
+		if (currentPath === '/login'){
+	 		$location.path('/home');
+	 	}else if (currentPath === '/home'){
+	    	var landingPage = LandingPageService.find(function(e){ return e.role === $rootScope.user.role }).link;
+	    	console.log('opening landing page: ' + landingPage);
+	    	landingPage && $location.path(landingPage);
+	    }	
+	}else{
+		if (currentPath !== '/register'){
+    		$location.path('/login');
+    	}
+	}
+}
+
+function authenticateOnServer(LoginService, $rootScope, callback) {
     LoginService.login().then(
-        function(user) {
+        function(user) {      // call success callback if current user is already authenticated before
             if (user) {
                 $rootScope.user = user;
-                if ($location.path() === '/login'){
-            		$location.path('/');
-            	}
                 console.log('authenticated: ', user);
+                callback && callback();
             } else {
                 $rootScope.user = null;
-                if ($location.path() !== '/register'){
-            		$location.path('/login');
-            	}
+                callback && callback();
             }
         },
         function() {
         	$rootScope.user = null;
-            if ($location.path() !== '/register'){
-        		$location.path('/login');
-        	}
+        	callback && callback();
         });
 }
