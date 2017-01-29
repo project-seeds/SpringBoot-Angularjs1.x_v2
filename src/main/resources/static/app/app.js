@@ -26,7 +26,7 @@ config(['$routeProvider', '$httpProvider', '$translateProvider', function($route
         AlertService.reset();
 
         if (next.$$route) {
-            if (!curr) { //on page reload
+            if (!curr || !curr.$$route) { //on page reload
                 authenticateOnServer(LoginService, $rootScope, $location);
             } else {
                 if ($rootScope.user) {
