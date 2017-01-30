@@ -17,27 +17,27 @@ config(['$routeProvider', '$httpProvider', '$translateProvider', function($route
     $translateProvider.preferredLanguage('ar');
 
     $httpProvider.defaults.headers.common['Accept-Language'] = 'ar';
+    $httpProvider.interceptors.push('HttpInterceptor');
 
-}]).run(['$rootScope', '$location', 'LoginService', 'AlertService', 'LandingPageService', function($rootScope, $location, LoginService, AlertService, LandingPageService) {
+}]).run(['$rootScope', '$location', 'LoginService', 'AlertService', 'LandingPageService', 'PublicPagesService', 
+    function($rootScope, $location, LoginService, AlertService, LandingPageService, PublicPagesService) {
 
     $rootScope.user = null;
     
     authenticateOnServer($rootScope, LoginService, function(){
-    	redirect($rootScope, $location, LandingPageService, $location.path());
+    	redirect($rootScope, $location, LandingPageService, PublicPagesService, $location.path());
     	
         $rootScope.$on('$routeChangeStart', function(ev, next, curr) {
             AlertService.reset();
-            next.$$route && redirect($rootScope, $location, LandingPageService, next.$$route.originalPath);
+            next.$$route && redirect($rootScope, $location, LandingPageService, PublicPagesService, next.$$route.originalPath);
         });
     })
 }]);
 
-function redirect($rootScope, $location, LandingPageService, currentPath){
-    
-    var PUBLIC_PAGES = ['/register'];
+function redirect($rootScope, $location, LandingPageService, PublicPagesService, currentPath){
 
 	if ($rootScope.user){
-		if (currentPath === '/login' || PUBLIC_PAGES.some(function(e){return e == currentPath})){
+		if (currentPath === '/login' || PublicPagesService.isPublicPage(currentPath)){
 	 		$location.path('/home');
 	 	}else if (currentPath === '/home'){
 	    	var landingPage = LandingPageService.find(function(e){ return e.role === $rootScope.user.role }).link;
@@ -45,7 +45,7 @@ function redirect($rootScope, $location, LandingPageService, currentPath){
 	    	landingPage && $location.path(landingPage);
 	    }	
 	}else{
-		if (!PUBLIC_PAGES.some(function(e){return e == currentPath})){
+		if (!PublicPagesService.isPublicPage(currentPath)){
     		$location.path('/login');
     	}
 	}
